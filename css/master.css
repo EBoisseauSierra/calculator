@@ -1,0 +1,119 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans');
+
+* {
+  box-sizing: border-box;
+}
+
+html{
+  width: 100%;
+  height: 100%;
+  font-family: 'Noto Sans', sans-serif;
+}
+
+body {
+  display: grid;
+  grid-template: 1fr 540px 1fr / 1fr 200px 1fr;
+  grid-gap: 13px;
+  place-items: stretch;
+  place-content: stretch;
+  width: 100%;
+  height: 100%;
+  background-color: #f9f9f9;
+}
+
+main {
+  grid-area: 2 / 2;
+  display: grid;
+  grid-template: 1.5fr .5fr repeat(5, 1fr) / repeat(4, 1fr);
+  place-items: stretch;
+  place-content: stretch;
+  grid-gap: 5px;
+}
+
+#digit0{
+  grid-area: 7 / 1;
+}
+
+#digit1{
+  grid-area: 6 / 1;
+}
+
+#digit2{
+  grid-area: 6 / 2;
+}
+
+#digit3{
+  grid-area: 6 / 3;
+}
+
+#digit4{
+  grid-area: 5 / 1;
+}
+
+#digit5{
+  grid-area: 5 / 2;
+}
+
+#digit6{
+  grid-area: 5 / 3;
+}
+
+#digit7{
+  grid-area: 4 / 1;
+}
+
+#digit8{
+  grid-area: 4 / 2;
+}
+
+#digit9{
+  grid-area: 4 / 3;
+}
+
+#colon{
+  grid-area: 7 / 2;
+}
+
+#add{
+  grid-area: 5 / 4;
+}
+
+#substract{
+  grid-area: 4 / 4;
+}
+
+#multiply{
+  grid-area: 3 / 4;
+}
+
+#divide{
+  grid-area: 3 / 3;
+}
+
+#equal{
+  grid-area: 6 / 4 / span 2 / span 1;
+}
+
+#percent{
+  grid-area: 3 / 2;
+}
+
+#clear{
+  grid-area: 3 / 1;
+}
+
+#sign{
+  grid-area: 7 / 3;
+}
+
+#screen-top{
+  grid-area: 1 / 1 / span 1 / span 4;
+}
+
+#screen-bottom{
+  grid-area: 2 / 1 / span 1 / span 4;
+}
+
+.screen{
+  background-color: #eee;
+}
