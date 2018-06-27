@@ -73,3 +73,72 @@ function clickOperation(operation) {
 function isThereError() {
     return currentNumber === 'ERROR';
 }
+
+document.addEventListener('keydown', function(event) {
+    if (event.repeat) return;
+    switch (event.key) {
+        case '0':
+            clickDigit(0);
+            break;
+        case '1':
+            clickDigit(1);
+            break;
+        case '2':
+            clickDigit(2);
+            break;
+        case '3':
+            clickDigit(3);
+            break;
+        case '4':
+            clickDigit(4);
+            break;
+        case '5':
+            clickDigit(5);
+            break;
+        case '6':
+            clickDigit(6);
+            break;
+        case '7':
+            clickDigit(7);
+            break;
+        case '8':
+            clickDigit(8);
+            break;
+        case '9':
+            clickDigit(9);
+            break;
+        case '.':
+            clickColon();
+            break;
+        case ',':
+            clickColon();
+            break;
+        case '+':
+            clickOperation('add');
+            break;
+        case '-':
+            clickOperation('substract');
+            break;
+        case '*':
+            clickOperation('multiply');
+            break;
+        case '/':
+            clickOperation('divide');
+            break;
+        case '=':
+            clickOperation('');
+            break;
+        case 'Enter':
+            clickOperation('');
+            break;
+        case 'Delete':
+            clickClear();
+            break;
+        case 'Backspace':
+            clickClear();
+            break;
+        default:
+            console.log(event.key);
+            return;
+    }
+});
