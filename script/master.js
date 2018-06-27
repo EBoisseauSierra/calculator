@@ -72,7 +72,15 @@ function clickClear() {
 // when ± is triggered
 function clickSign() {
     if (isThereError()) return;
-    currentNumber *= -1;
+    // if result of previous operation
+    if (currentNumber===undefined) {
+        if (storedNumber === undefined) return;
+        currentNumber = -1 * storedNumber;
+        nthDigitAfterColon = String(currentNumber).split('.')[1] === undefined ? 0 : String(currentNumber).split('.')[1].length + 1;
+    } else {
+        currentNumber *= -1;
+    }
+    displayStoredContent('');
     displayCurrentNumber();
 }
 
