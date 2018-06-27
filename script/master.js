@@ -97,7 +97,7 @@ function clickEqual() {
     }
     displayStoredContent(`${screenTop.textContent} ${currentNumber} =`);
     result =  operate(pendingOperation, storedNumber, currentNumber);
-    displayCurrentNumber(result);
+    displayCurrentNumber(Number.isNaN(result) ? 'ERROR' : result);
     storedNumber = result;
     currentNumber = undefined;
     result = undefined;
@@ -123,6 +123,11 @@ function clickOperation(operation) {
     if (pendingOperation !== ''){
         result = operate(pendingOperation, storedNumber, currentNumber);
         storedNumber = result;
+        if(Number.isNaN(result)) {
+            displayStoredContent(`${screenTop.textContent} ${currentNumber} =`);
+            displayCurrentNumber(Number.isNaN(result) ? 'ERROR' : result);
+            return;
+        }
         result = undefined;
         currentNumber = undefined;
         nthDigitAfterColon = 0;
