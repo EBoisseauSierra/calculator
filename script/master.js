@@ -37,3 +37,8 @@ function clickClear() {
     nthDigitAfterColon = 0;
     console.log('clear');
 }
+
+function clickSign() {
+    currentNumber *= -1;
+    console.log(currentNumber);
+}
