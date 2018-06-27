@@ -93,6 +93,8 @@ function clickEqual() {
         storedNumber = currentNumber;
         currentNumber = undefined;
         nthDigitAfterColon = 0;
+        displayStoredContent(`${storedNumber} =`);
+        displayCurrentNumber(storedNumber);
         return;
     }
     displayStoredContent(`${screenOperation.textContent} ${currentNumber} =`);
@@ -142,6 +144,15 @@ function clickOperation(operation) {
     displayCurrentNumber('');
 }
 
+function clickPercent() {
+    if (isThereError()) return;
+    if (currentNumber === undefined) return;
+    // if no stored number, assume 1
+    storedNumber = storedNumber === undefined ? 1 : storedNumber;
+    currentNumber = storedNumber * currentNumber / 100;
+    clickEqual();
+}
+
 function isThereError() {
     if(Number.isNaN(currentNumber) || Number.isNaN(storedNumber)) {
         displayCurrentNumber('ERROR');
@@ -188,6 +199,10 @@ document.addEventListener('keydown', function(event) {
             break;
         case '/':
             clickOperation('divide');
+            event.preventDefault();
+            break;
+        case '%':
+            clickPercent();
             break;
         case '=':
         case 'Enter':
