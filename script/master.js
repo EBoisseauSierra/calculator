@@ -11,8 +11,8 @@ let storedNumber;
 let result;
 let nthDigitAfterColon;
 let pendingOperation;
-const screenBottom = document.querySelector('#screen-bottom');
-const screenTop = document.querySelector('#screen-top');
+const screenInput = document.querySelector('#screen-input');
+const screenOperation = document.querySelector('#screen-operation');
 const operations = {add, substract, multiply, divide};
 const operationToSymbol = {
     add: '+',
@@ -28,7 +28,7 @@ window.onload = clickClear();
 function clickDigit(digit) {
     if (isThereError()) return;
     // if a result is currently displayed, remove it (i.e. starting a fresh operation after a result)
-    if (screenTop.textContent.slice(-1) === '=') {
+    if (screenOperation.textContent.slice(-1) === '=') {
         clickClear();
     }
 
@@ -47,7 +47,7 @@ function clickDigit(digit) {
 function clickColon() {
     if (isThereError()) return;
     // if a result is currently displayed, remove it (i.e. starting a fresh operation after a result)
-    if (screenTop.textContent.slice(-1) === '=') {
+    if (screenOperation.textContent.slice(-1) === '=') {
         clickClear();
     }
     // if already a float, a new colon does nothing
@@ -95,7 +95,7 @@ function clickEqual() {
         nthDigitAfterColon = 0;
         return;
     }
-    displayStoredContent(`${screenTop.textContent} ${currentNumber} =`);
+    displayStoredContent(`${screenOperation.textContent} ${currentNumber} =`);
     result =  operate(pendingOperation, storedNumber, currentNumber);
     displayCurrentNumber(Number.isNaN(result) ? 'ERROR' : result);
     storedNumber = result;
@@ -124,7 +124,7 @@ function clickOperation(operation) {
         result = operate(pendingOperation, storedNumber, currentNumber);
         storedNumber = result;
         if(Number.isNaN(result)) {
-            displayStoredContent(`${screenTop.textContent} ${currentNumber} =`);
+            displayStoredContent(`${screenOperation.textContent} ${currentNumber} =`);
             displayCurrentNumber(Number.isNaN(result) ? 'ERROR' : result);
             return;
         }
@@ -151,11 +151,11 @@ function isThereError() {
 }
 
 function displayCurrentNumber(text = currentNumber.toFixed(nthDigitAfterColon ? nthDigitAfterColon-1 : 0)) {
-    screenBottom.textContent = text;
+    screenInput.textContent = text;
 }
 
 function displayStoredContent(text = storedNumber) {
-    screenTop.textContent = text;
+    screenOperation.textContent = text;
 }
 
 document.addEventListener('keydown', function(event) {
