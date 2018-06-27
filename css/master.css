@@ -13,7 +13,6 @@ html{
 body {
   display: grid;
   grid-template: 1fr auto 1fr / 1fr auto 1fr;
-  grid-gap: 13px;
   place-items: stretch;
   place-content: stretch;
   width: 100%;
@@ -27,11 +26,21 @@ main {
   grid-template: 78.54px 30px repeat(5, 48.54px) / repeat(4, 48.54px);
   place-items: stretch;
   place-content: stretch;
-  grid-gap: 5px;
-  background-color: #eee;
-  border: 10px solid #eee;
-  border-radius: 5px;
+  grid-gap: 8px;
+  background-color: #333;
+  border: 16px solid #333;
+  border-radius: 12px;
 }
+
+button{
+  border-radius: 5px;
+  border: none;
+  font-size: 22.65px;
+  color: #eee;
+}
+  button:active{
+    opacity: .8;
+  }
 
 #digit0{
   grid-area: 7 / 1;
@@ -95,6 +104,7 @@ main {
 
 #equal{
   grid-area: 6 / 4 / span 2 / span 1;
+  background-color: #ff3800;
 }
 
 #percent{
@@ -109,11 +119,20 @@ main {
   grid-area: 7 / 3;
 }
 
+.digit-touch{
+  background-color: #999;
+}
+
+.operation-touch{
+  background-color: #222;
+}
+
 #screen-input{
   grid-area: 1 / 1 / span 1 / span 4;
   font-size: 39.6px;
   color: #444;
   background-color: #fff;
+  border-radius: 3px 3px 0 0;
 }
 
 #screen-operation{
@@ -121,7 +140,8 @@ main {
   font-size: 14px;
   color: #666;
   background-color: #ddd;
-  margin: -5px 0 5px 0;
+  margin: -8px 0 8px 0;
+  border-radius: 0 0 3px 3px;
 }
 
 .screen{
