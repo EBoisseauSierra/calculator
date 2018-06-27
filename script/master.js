@@ -1,6 +1,6 @@
 // global variables
-let currentNumber = NaN;
-let storedNumber = NaN;
+let currentNumber = undefined;
+let storedNumber = undefined;
 let nthDigitAfterColon = 0;
 let pendingOperation = '';
 
@@ -31,14 +31,14 @@ function clickColon() {
     // if the currentNumber is already a float
     if(nthDigitAfterColon > 0) return;
     // in the case one starts by colon
-    if(isNaN(currentNumber)) currentNumber = 0;
+    if(currentNumber === undefined) currentNumber = 0;
     nthDigitAfterColon = 1;
-    console.log(currentNumber+'.');
+    console.log(storedNumber + ' | ' + currentNumber+'.');
 }
 
 function clickClear() {
-    currentNumber = NaN;
-    currentNumber = NaN;
+    currentNumber = undefined;
+    storedNumber = undefined;
     nthDigitAfterColon = 0;
     console.log('CLEAR');
     console.log(storedNumber + ' | ' + currentNumber);
@@ -51,9 +51,20 @@ function clickSign() {
 }
 
 function clickOperation(operation) {
+    // error
     if (isThereError()) return;
+    // if an operation is fired without previous action
+    if(storedNumber === undefined && currentNumber === undefined) {
+        storedNumber = 0;
+        currentNumber = 0;
+    } else if (storedNumber === undefined) {
+        storedNumber = 0;
+    } else if (currentNumber === undefined) {
+        pendingOperation = operation;
+        return;
+    }
     storedNumber = (pendingOperation !== '') ? operate(pendingOperation, storedNumber, currentNumber) : currentNumber;
-    currentNumber = isNaN(storedNumber) ? 'ERROR' : NaN;
+    currentNumber = isNaN(storedNumber) ? 'ERROR' : undefined;
     nthDigitAfterColon = 0;
     pendingOperation = operation;
     console.log(storedNumber + ' | ' + currentNumber);
