@@ -1,21 +1,38 @@
-// global variables
-let currentNumber = undefined;
-let storedNumber = undefined;
-let nthDigitAfterColon = 0;
-let pendingOperation = '';
-
-// functions
+// global functions
 let add = (a, b) => a+b;
 let substract = (a, b) => a-b;
 let multiply = (a, b) => Math.floor(a*b*10000)/10000;
 let divide = (a, b) => b === 0 ? NaN : Math.floor(a*10000/b)/10000;
-let operations = {add, substract, multiply, divide};
 let operate = (operator, a, b) => operations[operator](a,b);
 
+// global variables
+let currentNumber;
+let storedNumber;
+let result;
+let nthDigitAfterColon;
+let pendingOperation;
+const screenBottom = document.querySelector('#screen-bottom');
+const screenTop = document.querySelector('#screen-top');
+const operations = {add, substract, multiply, divide};
+const operationToSymbol = {
+    add: '+',
+    substract: '−',
+    multiply: '×',
+    divide: '÷'
+};
+
+// at beginning
+window.onload = clickClear();
+
+// when a new digit is triggered
 function clickDigit(digit) {
     if (isThereError()) return;
-    if (currentNumber === 'ERROR') return;
+    // if a result is currently displayed, remove it (i.e. starting a fresh operation after a result)
+    if (screenTop.textContent.slice(-1) === '=') {
+        clickClear();
+    }
 
+    // we consider whether the digit is an integer or a float
     if (nthDigitAfterColon > 0) {
         currentNumber += digit * Math.pow(10, -nthDigitAfterColon);
         currentNumber = parseFloat(currentNumber.toFixed(nthDigitAfterColon));
@@ -23,62 +40,124 @@ function clickDigit(digit) {
     } else {
         currentNumber = currentNumber ? currentNumber * 10 + digit : digit;
     }
-    console.log(storedNumber + ' | ' + currentNumber);
+    displayCurrentNumber();
 }
 
+// when '.' is triggered
 function clickColon() {
     if (isThereError()) return;
-    // if the currentNumber is already a float
+    // if a result is currently displayed, remove it (i.e. starting a fresh operation after a result)
+    if (screenTop.textContent.slice(-1) === '=') {
+        clickClear();
+    }
+    // if already a float, a new colon does nothing
     if(nthDigitAfterColon > 0) return;
-    // in the case one starts by colon
+    // if colon is the first key pressed, assume 0
     if(currentNumber === undefined) currentNumber = 0;
     nthDigitAfterColon = 1;
-    console.log(storedNumber + ' | ' + currentNumber+'.');
+    displayCurrentNumber(currentNumber+'.');
 }
 
+// when 'clear' is triggered
 function clickClear() {
     currentNumber = undefined;
     storedNumber = undefined;
+    result = undefined;
+    pendingOperation = '';
     nthDigitAfterColon = 0;
-    console.log('CLEAR');
-    console.log(storedNumber + ' | ' + currentNumber);
+    displayStoredContent('');
+    displayCurrentNumber('');
 }
 
+// when ± is triggered
 function clickSign() {
     if (isThereError()) return;
     currentNumber *= -1;
-    console.log(storedNumber + ' | ' + currentNumber);
+    displayCurrentNumber();
 }
 
+// when = is triggered
+function clickEqual() {
+    if (isThereError()) return;
+    // if no previous action
+    if(storedNumber === undefined && currentNumber === undefined) return;
+    // if no currentNumber
+    if(currentNumber === undefined || isNaN(currentNumber)) {
+        pendingOperation = '';
+        displayStoredContent(`${storedNumber} =`);
+        displayCurrentNumber(storedNumber);
+        return;
+    }
+    // if no pendingOperation
+    if(pendingOperation === '') {
+        storedNumber = currentNumber;
+        currentNumber = undefined;
+        nthDigitAfterColon = 0;
+        return;
+    }
+    displayStoredContent(`${screenTop.textContent} ${currentNumber} =`);
+    result =  operate(pendingOperation, storedNumber, currentNumber);
+    displayCurrentNumber(result);
+    storedNumber = result;
+    currentNumber = undefined;
+    result = undefined;
+    nthDigitAfterColon = 0;
+    pendingOperation = '';
+}
+
+// when +-*/ is triggered
 function clickOperation(operation) {
     // error
     if (isThereError()) return;
-    // if an operation is fired without previous action
-    if(storedNumber === undefined && currentNumber === undefined) {
-        storedNumber = 0;
-        currentNumber = 0;
-    } else if (storedNumber === undefined) {
-        storedNumber = 0;
-    } else if (currentNumber === undefined) {
+    // if no currentNumber, just remember operation
+    if (currentNumber === undefined) {
+        // TODO: cas où la première opération est - (voir +)
+        displayStoredContent(`${storedNumber} ${operationToSymbol[operation]}`);
+        displayCurrentNumber('')
         pendingOperation = operation;
         return;
     }
-    storedNumber = (pendingOperation !== '') ? operate(pendingOperation, storedNumber, currentNumber) : currentNumber;
-    currentNumber = isNaN(storedNumber) ? 'ERROR' : undefined;
-    nthDigitAfterColon = 0;
+    // if no stored number, assume 0
+    storedNumber = storedNumber === undefined ? 0 : storedNumber;
+    // perform pendingOperation if any
+    if (pendingOperation !== ''){
+        result = operate(pendingOperation, storedNumber, currentNumber);
+        storedNumber = result;
+        result = undefined;
+        currentNumber = undefined;
+        nthDigitAfterColon = 0;
+    } else {
+        // test if a result is currently displayed
+        storedNumber = currentNumber === undefined ? storedNumber : currentNumber;
+        currentNumber = undefined;
+        nthDigitAfterColon = 0;
+    }
     pendingOperation = operation;
-    console.log(storedNumber + ' | ' + currentNumber);
+    displayStoredContent(`${storedNumber} ${operationToSymbol[operation]}`);
+    displayCurrentNumber('');
 }
 
 function isThereError() {
-    return currentNumber === 'ERROR';
+    if(Number.isNaN(currentNumber) || Number.isNaN(storedNumber)) {
+        displayCurrentNumber('ERROR');
+        return true;
+    }
+    return false;
+}
+
+function displayCurrentNumber(text = currentNumber.toFixed(nthDigitAfterColon ? nthDigitAfterColon-1 : 0)) {
+    screenBottom.textContent = text;
+}
+
+function displayStoredContent(text = storedNumber) {
+    screenTop.textContent = text;
 }
 
 document.addEventListener('keydown', function(event) {
     if (event.repeat) return;
     switch (event.key) {
         case '0':
-            clickDigit(0);
+            clickDigit(Number(event.key));
             break;
         case '1':
             clickDigit(1);
@@ -126,10 +205,10 @@ document.addEventListener('keydown', function(event) {
             clickOperation('divide');
             break;
         case '=':
-            clickOperation('');
+            clickEqual();
             break;
         case 'Enter':
-            clickOperation('');
+            clickEqual();
             break;
         case 'Delete':
             clickClear();
@@ -138,7 +217,6 @@ document.addEventListener('keydown', function(event) {
             clickClear();
             break;
         default:
-            console.log(event.key);
             return;
     }
 });

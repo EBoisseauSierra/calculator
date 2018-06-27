@@ -24,7 +24,7 @@ body {
 main {
   grid-area: 2 / 2;
   display: grid;
-  grid-template: 1.5fr .5fr repeat(5, 1fr) / repeat(4, 1fr);
+  grid-template: .5fr 1.5fr repeat(5, 1fr) / repeat(4, 1fr);
   place-items: stretch;
   place-content: stretch;
   grid-gap: 5px;
