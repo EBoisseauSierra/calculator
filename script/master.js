@@ -157,38 +157,18 @@ document.addEventListener('keydown', function(event) {
     if (event.repeat) return;
     switch (event.key) {
         case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
             clickDigit(Number(event.key));
             break;
-        case '1':
-            clickDigit(1);
-            break;
-        case '2':
-            clickDigit(2);
-            break;
-        case '3':
-            clickDigit(3);
-            break;
-        case '4':
-            clickDigit(4);
-            break;
-        case '5':
-            clickDigit(5);
-            break;
-        case '6':
-            clickDigit(6);
-            break;
-        case '7':
-            clickDigit(7);
-            break;
-        case '8':
-            clickDigit(8);
-            break;
-        case '9':
-            clickDigit(9);
-            break;
         case '.':
-            clickColon();
-            break;
         case ',':
             clickColon();
             break;
@@ -205,18 +185,12 @@ document.addEventListener('keydown', function(event) {
             clickOperation('divide');
             break;
         case '=':
-            clickEqual();
-            break;
         case 'Enter':
             clickEqual();
             break;
         case 'Delete':
-            clickClear();
-            break;
         case 'Backspace':
             clickClear();
             break;
-        default:
-            return;
     }
 });
