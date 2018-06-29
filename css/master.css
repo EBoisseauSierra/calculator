@@ -132,14 +132,17 @@ button{
   font-size: 39.6px;
   color: #444;
   background-color: #fff;
+  border-color: #fff;
   border-radius: 3px 3px 0 0;
 }
 
 #screen-operation{
   grid-area: 2 / 1 / span 1 / span 4;
   font-size: 14px;
+  white-space: nowrap;
   color: #666;
   background-color: #ddd;
+  border-color: #ddd;
   margin: -8px 0 8px 0;
   border-radius: 0 0 3px 3px;
 }
@@ -149,5 +152,7 @@ button{
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding: 10px 20px;
+  border-width: 0 19px;
+  border-style: solid;
+  overflow: hidden;
 }
